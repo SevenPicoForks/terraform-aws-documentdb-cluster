@@ -119,7 +119,7 @@ module "dns_master" {
   source  = "cloudposse/route53-cluster-hostname/aws"
   version = "0.12.2"
 
-  enabled  = module.this.enabled && var.zone_id != "" ? true : false
+  enabled  = module.this.enabled
   dns_name = local.cluster_dns_name
   zone_id  = var.zone_id
   records  = coalescelist(aws_docdb_cluster.default.*.endpoint, [""])
@@ -131,7 +131,7 @@ module "dns_replicas" {
   source  = "cloudposse/route53-cluster-hostname/aws"
   version = "0.12.2"
 
-  enabled  = module.this.enabled && var.zone_id != "" ? true : false
+  enabled  = module.this.enabled
   dns_name = local.replicas_dns_name
   zone_id  = var.zone_id
   records  = coalescelist(aws_docdb_cluster.default.*.reader_endpoint, [""])
