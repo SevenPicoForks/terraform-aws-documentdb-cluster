@@ -20,7 +20,7 @@ module "vpc" {
 
   cidr_block = var.vpc_cidr_block
 
-  context = module.this.context
+  context = module.context.self
 }
 
 module "subnets" {
@@ -34,7 +34,7 @@ module "subnets" {
   nat_gateway_enabled  = false
   nat_instance_enabled = false
 
-  context = module.this.context
+  context = module.context.self
 }
 
 module "documentdb_cluster" {
@@ -66,5 +66,5 @@ module "documentdb_cluster" {
   cluster_dns_name                = var.cluster_dns_name
   reader_dns_name                 = var.reader_dns_name
 
-  context = module.this.context
+  context = module.context.self
 }
