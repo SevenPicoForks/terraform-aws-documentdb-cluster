@@ -24,7 +24,7 @@ resource "aws_security_group_rule" "ingress_security_groups" {
   from_port                = var.db_port
   to_port                  = var.db_port
   protocol                 = "tcp"
-  source_security_group_id = element(var.allowed_security_groups, count.index)
+  source_security_group_id = each.value
   security_group_id        = join("", aws_security_group.default.*.id)
 }
 
