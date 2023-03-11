@@ -18,7 +18,7 @@ resource "aws_security_group_rule" "egress" {
 }
 
 resource "aws_security_group_rule" "ingress_security_groups" {
-  count                    = module.context.enabled ? length(var.allowed_security_groups) : 0
+  for_each                 = module.context.enabled ? toset(var.allowed_security_groups) : toset([])
   type                     = "ingress"
   description              = "Allow inbound traffic from existing Security Groups"
   from_port                = var.db_port
