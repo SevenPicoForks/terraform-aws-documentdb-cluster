@@ -4,9 +4,15 @@ variable "zone_id" {
 }
 
 variable "allowed_security_groups" {
-  type        = list(string)
-  default     = []
-  description = "List of existing Security Groups to be allowed to connect to the DocumentDB cluster"
+  type        = map(string)
+  default     = {}
+  description = <<EOF
+  NOTE: Because of COUNT issues at apply time, converting from Map to List.
+  Map of existing Security Groups to be allowed to connect to the DocumentDB cluster."
+{
+  sg_id : sg_id
+}
+EOF
 }
 
 variable "allowed_cidr_blocks" {
