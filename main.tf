@@ -46,6 +46,8 @@ resource "random_password" "password" {
 }
 
 resource "aws_docdb_cluster" "default" {
+  #checkov:skip=CKV_AWS_85:skipping 'Ensure DocDB Logging is enabled' because it can be enabled through 'var.enabled_cloudwatch_logs_exports'.
+  #checkov:skip=CKV_AWS_182:skipping 'Ensure Doc DB is encrypted by KMS using a customer managed Key (CMK)' because it can be configured through 'var.kms_key_id'
   count                           = module.context.enabled ? 1 : 0
   cluster_identifier              = module.context.id
   master_username                 = var.master_username
@@ -93,6 +95,7 @@ resource "aws_docdb_subnet_group" "default" {
 
 # https://docs.aws.amazon.com/documentdb/latest/developerguide/db-cluster-parameter-group-create.html
 resource "aws_docdb_cluster_parameter_group" "default" {
+  #checkov:skip=CKV_AWS_104:skipping 'Ensure DocDB has audit logs enabled' because it can be enabled through 'var.cluster_parameters'.
   count       = module.context.enabled ? 1 : 0
   name        = module.context.id
   description = "DB cluster parameter group"
