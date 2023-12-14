@@ -161,3 +161,9 @@ variable "reader_dns_name" {
   description = "Name of the reader endpoint CNAME record to create in the parent DNS zone specified by `zone_id`. If left empty, the name will be auto-asigned using the format `replicas.var.name`"
   default     = ""
 }
+
+variable "enable_performance_insights" {
+  type        = bool
+  description = "A value that indicates whether to enable Performance Insights for the DB Instance."
+  default     = false
+}
