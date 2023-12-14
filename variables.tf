@@ -167,3 +167,9 @@ variable "enable_performance_insights" {
   description = "A value that indicates whether to enable Performance Insights for the DB Instance."
   default     = false
 }
+
+variable "performance_insights_kms_key_id" {
+  type        = string
+  description = "The KMS key identifier is the key ARN, key ID, alias ARN, or alias name for the KMS key. If you do not specify a value for PerformanceInsightsKMSKeyId, then Amazon DocumentDB uses your default KMS key."
+  default     = ""
+}

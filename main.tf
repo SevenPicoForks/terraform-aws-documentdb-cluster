@@ -82,7 +82,8 @@ resource "aws_docdb_cluster_instance" "default" {
   auto_minor_version_upgrade = var.auto_minor_version_upgrade
   tags                       = module.context.tags
 
-  enable_performance_insights = var.enable_performance_insights
+  enable_performance_insights     = var.enable_performance_insights
+  performance_insights_kms_key_id = var.performance_insights_kms_key_id
 }
 
 resource "aws_docdb_subnet_group" "default" {
