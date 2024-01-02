@@ -41,7 +41,7 @@ module "documentdb_cluster" {
   context = module.context.self
 }
 
-module "ddb_event_subscription" {
+module "ddb_event_subscription_cluster" {
   source = "../../modules/documentdb-event-subscriptions"
 
   ddb_event_categories = ["creation", "failure"]
@@ -50,7 +50,7 @@ module "ddb_event_subscription" {
   sns_topic_arn = null
 }
 
-module "ddb_event_subscription" {
+module "ddb_event_subscription_instance" {
   source = "../../modules/documentdb-event-subscriptions"
 
   ddb_event_categories = ["creation", "failure"]
