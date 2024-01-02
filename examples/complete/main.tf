@@ -43,7 +43,7 @@ module "documentdb_cluster" {
 }
 
 module "ddb_event_subscription_cluster" {
-  source = "../../modules/documentdb-event-subscriptions"
+  source = "../../modules/events"
 
   ddb_event_categories = ["creation", "failure", "failover"]
   ddb_source_ids       = [module.documentdb_cluster.id]

@@ -36,6 +36,9 @@ resource "awscc_chatbot_slack_channel_configuration" "chatbot_slack" {
   logging_level      = "NONE"
   slack_channel_id   = var.slack_channel_id
   slack_workspace_id = var.slack_workspace_id
-  sns_topic_arns     = []
+  sns_topic_arns = [
+    module.ddb_event_subscription_cluster.sns_topic_arn,
+    module.ddb_event_subscription_instance.sns_topic_arn
+  ]
   user_role_required = false
 }

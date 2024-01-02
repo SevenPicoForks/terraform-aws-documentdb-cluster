@@ -8,7 +8,7 @@ locals {
 #------------------------------------------------------------------------------
 resource "aws_docdb_event_subscription" "ddb_event_subscription" {
   count            = module.context.enabled ? 1 : 0
-  name             = "${module.context.id}-ddb-event-subscription"
+  name             = "${module.context.id}-events"
   enabled          = true
   event_categories = var.ddb_event_categories
   source_type      = var.ddb_source_type
