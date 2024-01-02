@@ -13,6 +13,11 @@ output "arn" {
   description = "Amazon Resource Name (ARN) of the cluster"
 }
 
+output "id" {
+  value       = join("", aws_docdb_cluster.default.*.id)
+  description = "DocumentDB Cluster Resource ID"
+}
+
 output "endpoint" {
   value       = join("", aws_docdb_cluster.default.*.endpoint)
   description = "Endpoint of the DocumentDB cluster"

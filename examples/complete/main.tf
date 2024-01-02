@@ -9,34 +9,6 @@ https://www.terraform.io/docs/providers/aws/r/docdb_cluster_parameter_group.html
 https://www.terraform.io/docs/providers/aws/r/docdb_subnet_group.html
 https://docs.aws.amazon.com/documentdb/latest/developerguide/troubleshooting.html
 */
-
-provider "aws" {
-  region = var.region
-}
-
-module "vpc" {
-  source  = "cloudposse/vpc/aws"
-  version = "2.1.0"
-
-  ipv4_primary_cidr_block = var.vpc_cidr_block
-
-  context = module.context.self
-}
-
-module "subnets" {
-  source  = "cloudposse/dynamic-subnets/aws"
-  version = "2.3.0"
-
-  availability_zones   = var.availability_zones
-  vpc_id               = module.vpc.vpc_id
-  igw_id               = [module.vpc.igw_id]
-  ipv4_cidr_block      = [module.vpc.vpc_cidr_block]
-  nat_gateway_enabled  = false
-  nat_instance_enabled = false
-
-  context = module.context.self
-}
-
 module "documentdb_cluster" {
   source                          = "../../"
   cluster_size                    = var.cluster_size
@@ -45,7 +17,7 @@ module "documentdb_cluster" {
   instance_class                  = var.instance_class
   db_port                         = var.db_port
   vpc_id                          = module.vpc.vpc_id
-  subnet_ids                      = module.subnets.private_subnet_ids
+  subnet_ids                      = module.vpc_subnets.private_subnet_ids
   zone_id                         = var.zone_id
   apply_immediately               = var.apply_immediately
   auto_minor_version_upgrade      = var.auto_minor_version_upgrade
@@ -67,4 +39,22 @@ module "documentdb_cluster" {
   reader_dns_name                 = var.reader_dns_name
 
   context = module.context.self
+}
+
+module "ddb_event_subscription" {
+  source = "../../modules/documentdb-event-subscriptions"
+
+  ddb_event_categories = ["creation", "failure"]
+  ddb_source_ids = [module.documentdb_cluster.id]
+  ddb_source_type = "db-cluster"
+  sns_topic_arn = null
+}
+
+module "ddb_event_subscription" {
+  source = "../../modules/documentdb-event-subscriptions"
+
+  ddb_event_categories = ["creation", "failure"]
+  ddb_source_ids = [module.documentdb_cluster.id]
+  ddb_source_type = "db-instance"
+  sns_topic_arn = null
 }
