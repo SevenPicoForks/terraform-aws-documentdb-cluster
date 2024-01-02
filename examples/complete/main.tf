@@ -44,7 +44,7 @@ module "documentdb_cluster" {
 module "ddb_event_subscription_cluster" {
   source = "../../modules/documentdb-event-subscriptions"
 
-  ddb_event_categories = ["creation", "failure"]
+  ddb_event_categories = ["creation", "failure", "failover"]
   ddb_source_ids = [module.documentdb_cluster.id]
   ddb_source_type = "db-cluster"
   sns_topic_arn = null
@@ -53,7 +53,7 @@ module "ddb_event_subscription_cluster" {
 module "ddb_event_subscription_instance" {
   source = "../../modules/documentdb-event-subscriptions"
 
-  ddb_event_categories = ["creation", "failure"]
+  ddb_event_categories = ["creation", "failure", "failover"]
   ddb_source_ids = [module.documentdb_cluster.id]
   ddb_source_type = "db-instance"
   sns_topic_arn = null
