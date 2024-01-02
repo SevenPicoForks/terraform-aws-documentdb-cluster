@@ -11,50 +11,51 @@ https://docs.aws.amazon.com/documentdb/latest/developerguide/troubleshooting.htm
 */
 module "documentdb_cluster" {
   source                          = "../../"
-  cluster_size                    = var.cluster_size
-  master_username                 = var.master_username
-  master_password                 = var.master_password
-  instance_class                  = var.instance_class
-  db_port                         = var.db_port
-  vpc_id                          = module.vpc.vpc_id
-  subnet_ids                      = module.vpc_subnets.private_subnet_ids
-  zone_id                         = var.zone_id
-  apply_immediately               = var.apply_immediately
-  auto_minor_version_upgrade      = var.auto_minor_version_upgrade
-  allowed_security_groups         = var.allowed_security_groups
-  allowed_cidr_blocks             = var.allowed_cidr_blocks
-  snapshot_identifier             = var.snapshot_identifier
-  retention_period                = var.retention_period
-  preferred_backup_window         = var.preferred_backup_window
-  preferred_maintenance_window    = var.preferred_maintenance_window
-  cluster_parameters              = var.cluster_parameters
+  allowed_cidr_blocks             = []
+  allowed_security_groups         = []
+  apply_immediately               = true
+  auto_minor_version_upgrade      = true
+  cluster_dns_name                = ""
   cluster_family                  = var.cluster_family
+  cluster_size                    = var.cluster_size
+  db_port                         = var.db_port
+  deletion_protection             = false
+  enabled_cloudwatch_logs_exports = []
   engine                          = var.engine
   engine_version                  = var.engine_version
-  storage_encrypted               = var.storage_encrypted
-  kms_key_id                      = var.kms_key_id
+  instance_class                  = var.instance_class
+  kms_key_id                      = ""
+  master_password                 = var.master_password
+  master_username                 = var.master_username
+  preferred_backup_window         = var.preferred_backup_window
+  preferred_maintenance_window    = var.preferred_maintenance_window
+  reader_dns_name                 = ""
+  retention_period                = var.retention_period
   skip_final_snapshot             = var.skip_final_snapshot
-  enabled_cloudwatch_logs_exports = var.enabled_cloudwatch_logs_exports
-  cluster_dns_name                = var.cluster_dns_name
-  reader_dns_name                 = var.reader_dns_name
-
-  context = module.context.self
+  snapshot_identifier             = ""
+  storage_encrypted               = var.storage_encrypted
+  subnet_ids                      = module.vpc_subnets.private_subnet_ids
+  vpc_id                          = module.vpc.vpc_id
+  zone_id                         = ""
+  enable_performance_insights     = false
+  performance_insights_kms_key_id = ""
+  cluster_parameters              = []
 }
 
 module "ddb_event_subscription_cluster" {
   source = "../../modules/documentdb-event-subscriptions"
 
   ddb_event_categories = ["creation", "failure", "failover"]
-  ddb_source_ids = [module.documentdb_cluster.id]
-  ddb_source_type = "db-cluster"
-  sns_topic_arn = null
+  ddb_source_ids       = [module.documentdb_cluster.id]
+  ddb_source_type      = "db-cluster"
+  sns_topic_arn        = null
 }
 
 module "ddb_event_subscription_instance" {
   source = "../../modules/documentdb-event-subscriptions"
 
   ddb_event_categories = ["creation", "failure", "failover"]
-  ddb_source_ids = [module.documentdb_cluster.id]
-  ddb_source_type = "db-instance"
-  sns_topic_arn = null
+  ddb_source_ids       = [module.documentdb_cluster.id]
+  ddb_source_type      = "db-instance"
+  sns_topic_arn        = null
 }
