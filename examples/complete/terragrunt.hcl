@@ -59,13 +59,13 @@ inputs = {
   master_password         = "password1"
   retention_period        = 5
   preferred_backup_window = "07:00-09:00"
-  cluster_family          = "docdb3.6"
+  clu ster_family          = "docdb3.6"
   engine                  = "docdb"
   storage_encrypted       = true
   skip_final_snapshot     = true
   apply_immediately       = true
-  slack_channel_id        = "T01ASKY2P5L"
-  slack_workspace_id      = "C064J6QSFL5"
+  slack_channel_id        = "C064J6QSFL5"
+  slack_workspace_id      = "T01ASKY2P5L"
 }
 
 remote_state {
