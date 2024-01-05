@@ -63,6 +63,10 @@ output "security_group_name" {
   description = "Name of the DocumentDB cluster Security Group"
 }
 
+output "dbi_resource_id" {
+  value = module.documentdb_cluster.dbi_resource_id
+}
+
 output "instance_name" {
-  value = module.documentdb_cluster.instance_name
+  value = module.documentdb_cluster.id
 }
