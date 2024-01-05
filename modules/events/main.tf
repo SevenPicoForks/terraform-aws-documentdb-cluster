@@ -4,25 +4,13 @@ locals {
 
 
 #------------------------------------------------------------------------------
-# Sns Context
-#------------------------------------------------------------------------------
-module "sns_context" {
-  source     = "SevenPico/context/null"
-  version    = "2.0.0"
-  context    = module.context.self
-  enabled    = module.context.enabled && local.enable_sns_notification
-  attributes = ["sns"]
-}
-
-
-#------------------------------------------------------------------------------
 # Sns Kms Key
 #------------------------------------------------------------------------------
 module "sns_kms_key" {
-  count                    = module.context.enabled && local.enable_sns_notification ? 1 : 0
+  count                    = local.enable_sns_notification ? 1 : 0
   source                   = "SevenPicoForks/kms-key/aws"
   version                  = "2.0.0"
-  context                  = module.sns_context.self
+  context                  = module.context.self
   alias                    = ""
   customer_master_key_spec = "SYMMETRIC_DEFAULT"
   deletion_window_in_days  = 30
@@ -36,10 +24,10 @@ module "sns_kms_key" {
 # Sns
 #------------------------------------------------------------------------------
 module "sns" {
-  count             = module.context.enabled && local.enable_sns_notification ? 1 : 0
+  count             = local.enable_sns_notification ? 1 : 0
   source            = "SevenPico/sns/aws"
   version           = "2.0.2"
-  context           = module.sns_context.self
+  context           = module.context.self
   kms_master_key_id = module.sns_kms_key[0].key_id
   pub_principals    = {}
   sub_principals    = {}
