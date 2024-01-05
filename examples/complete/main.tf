@@ -36,14 +36,14 @@ module "documentdb_cluster" {
   enabled_cloudwatch_logs_exports = var.enabled_cloudwatch_logs_exports
   cluster_dns_name                = var.cluster_dns_name
   reader_dns_name                 = var.reader_dns_name
-  zone_id                         = try(aws_route53_zone.private[0].id,"")
+  zone_id                         = try(aws_route53_zone.private[0].id, "")
 
   context = module.context.self
 }
 
 module "ddb_event_subscription_cluster" {
-  source = "../../modules/events"
-  context = module.context.self
+  source     = "../../modules/events"
+  context    = module.context.self
   attributes = ["creation"]
 
   ddb_event_categories = ["creation"]
@@ -53,8 +53,8 @@ module "ddb_event_subscription_cluster" {
 }
 
 module "ddb_event_subscription_instance" {
-  source = "../../modules/events"
-  context = module.context.self
+  source     = "../../modules/events"
+  context    = module.context.self
   attributes = ["failure", "failover"]
 
   ddb_event_categories = ["failure", "failover"]

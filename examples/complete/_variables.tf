@@ -163,11 +163,11 @@ variable "slack_workspace_id" {
 }
 
 variable "slack_channel_id" {
-  type = string
+  type        = string
   description = "The id of the Slack channel."
 }
 
 variable "root_domain" {
-  type = string
+  type        = string
   description = "Root Domain"
 }

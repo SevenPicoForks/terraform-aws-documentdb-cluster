@@ -48,11 +48,11 @@ inputs = {
 
   # Module / Example Specific
   enabled                 = true
-  region                  = "us-east-2"
-  availability_zones      = ["us-east-2a", "us-east-2b"]
+  region                  = "us-east-1"
+  availability_zones      = ["us-east-1a", "us-east-1b"]
   name                    = "documentdb-cluster"
   vpc_cidr_block          = "172.16.0.0/16"
-  instance_class          = "db.r4.large"
+  instance_class          = "db.t2.micro"
   cluster_size            = 1
   db_port                 = 27017
   master_username         = "admin1"
