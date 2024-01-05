@@ -10,13 +10,18 @@ https://www.terraform.io/docs/providers/aws/r/docdb_subnet_group.html
 https://docs.aws.amazon.com/documentdb/latest/developerguide/troubleshooting.html
 */
 module "documentdb_cluster" {
-  source                          = "../../"
-  allowed_cidr_blocks             = []
-  allowed_security_groups         = []
-  apply_immediately               = true
-  auto_minor_version_upgrade      = true
-  cluster_dns_name                = ""
-  cluster_family                  = var.cluster_family
+  source                     = "../../"
+  allowed_cidr_blocks        = []
+  allowed_security_groups    = []
+  apply_immediately          = true
+  auto_minor_version_upgrade = true
+  cluster_dns_name           = ""
+  cluster_family             = var.cluster_family
+  cluster_parameters = [{
+    apply_method = "pending-reboot"
+    name         = "tls"
+    value        = "enabled"
+  }]
   cluster_size                    = var.cluster_size
   db_port                         = var.db_port
   deletion_protection             = false
@@ -39,7 +44,6 @@ module "documentdb_cluster" {
   zone_id                         = ""
   enable_performance_insights     = false
   performance_insights_kms_key_id = ""
-  cluster_parameters              = []
 }
 
 module "ddb_event_subscription_cluster" {
