@@ -49,7 +49,6 @@ module "ddb_event_subscription_cluster" {
   ddb_event_categories = ["creation"]
   ddb_source_ids       = [module.documentdb_cluster.id]
   ddb_source_type      = "db-cluster"
-  sns_topic_arn        = null
 }
 
 module "ddb_event_subscription_cluster_fail" {
@@ -60,7 +59,6 @@ module "ddb_event_subscription_cluster_fail" {
   ddb_event_categories = ["failure", "failover"]
   ddb_source_ids       = [module.documentdb_cluster.id]
   ddb_source_type      = "db-cluster"
-  sns_topic_arn        = null
 }
 
 module "sns" {
@@ -81,5 +79,4 @@ module "ddb_event_subscription_instance" {
   ddb_event_categories = ["failure", "failover"]
   ddb_source_ids       = [module.documentdb_cluster.instance_identifier]
   ddb_source_type      = "db-instance"
-  sns_topic_arn        = module.sns[0].topic_arn
 }
