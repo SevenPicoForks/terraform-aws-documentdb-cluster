@@ -45,7 +45,6 @@ module "ddb_event_subscription_cluster" {
   source     = "../../modules/events"
   context    = module.context.self
   attributes = ["creation"]
-  depends_on = [module.documentdb_cluster]
 
   ddb_event_categories = ["creation"]
   ddb_source_ids       = [module.documentdb_cluster.id]
@@ -53,14 +52,34 @@ module "ddb_event_subscription_cluster" {
   sns_topic_arn        = null
 }
 
-module "ddb_event_subscription_instance" {
+module "ddb_event_subscription_cluster" {
   source     = "../../modules/events"
   context    = module.context.self
   attributes = ["failure", "failover"]
-  depends_on = [module.documentdb_cluster]
 
   ddb_event_categories = ["failure", "failover"]
   ddb_source_ids       = [module.documentdb_cluster.id]
   ddb_source_type      = "db-cluster"
   sns_topic_arn        = null
+}
+
+module "sns" {
+  count             = module.context.enabled ? 1: 0
+  source            = "SevenPico/sns/aws"
+  version           = "2.0.2"
+  context           = module.context.self
+  kms_master_key_id = ""
+  pub_principals    = {}
+  sub_principals    = {}
+}
+
+module "ddb_event_subscription_instance" {
+  source     = "../../modules/events"
+  context    = module.context.self
+  attributes = ["cluster","instance"]
+
+  ddb_event_categories = ["failure", "failover"]
+  ddb_source_ids       = [module.documentdb_cluster.instance_identifier]
+  ddb_source_type      = "db-instance"
+  sns_topic_arn        = module.sns.topic_arn
 }
