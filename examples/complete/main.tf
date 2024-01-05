@@ -52,7 +52,7 @@ module "ddb_event_subscription_cluster" {
   sns_topic_arn        = null
 }
 
-module "ddb_event_subscription_cluster" {
+module "ddb_event_subscription_cluster_fail" {
   source     = "../../modules/events"
   context    = module.context.self
   attributes = ["failure", "failover"]
