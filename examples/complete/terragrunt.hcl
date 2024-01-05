@@ -64,6 +64,8 @@ inputs = {
   storage_encrypted       = true
   skip_final_snapshot     = true
   apply_immediately       = true
+  slack_channel_id = "T01ASKY2P5L"
+          slack_workspace_id = "C064J6QSFL5"
 }
 
 remote_state {
