@@ -45,6 +45,7 @@ module "ddb_event_subscription_cluster" {
   source     = "../../modules/events"
   context    = module.context.self
   attributes = ["creation"]
+  depends_on = [module.documentdb_cluster]
 
   ddb_event_categories = ["creation"]
   ddb_source_ids       = [module.documentdb_cluster.id]
@@ -56,9 +57,10 @@ module "ddb_event_subscription_instance" {
   source     = "../../modules/events"
   context    = module.context.self
   attributes = ["failure", "failover"]
+  depends_on = [module.documentdb_cluster]
 
   ddb_event_categories = ["failure", "failover"]
   ddb_source_ids       = [module.documentdb_cluster.id]
-  ddb_source_type      = "db-instance"
+  ddb_source_type      = "db-cluster"
   sns_topic_arn        = null
 }

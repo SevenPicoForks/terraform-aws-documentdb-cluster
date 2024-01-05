@@ -14,6 +14,7 @@ resource "aws_docdb_event_subscription" "ddb_event_subscription" {
   source_type      = var.ddb_source_type
   source_ids       = var.ddb_source_ids
   sns_topic_arn    = local.enable_sns_notification ? module.sns[0].topic_arn : var.sns_topic_arn
+  tags             = module.context.tags
 }
 
 
