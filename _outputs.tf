@@ -8,13 +8,8 @@ output "cluster_name" {
   description = "Cluster Identifier"
 }
 
-output "dbi_resource_id" {
-  value       = join("", aws_docdb_cluster_instance.default.*.dbi_resource_id)
-  description = "Cluster Identifier"
-}
-
-output "instance_id" {
-  value = join("", aws_docdb_cluster_instance.default.*.id)
+output "instance_identifier" {
+  value = join("", aws_docdb_cluster_instance.default.*.identifier)
 }
 
 output "arn" {
