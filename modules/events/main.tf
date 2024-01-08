@@ -1,8 +1,13 @@
+locals {
+  enable_sns_notifications = module.context.enabled && var.sns_topic_arn == null
+}
+
+
 #------------------------------------------------------------------------------
 # Sns Kms Key
 #------------------------------------------------------------------------------
 module "sns_kms_key" {
-  count                    = module.context.enabled ? 1 : 0
+  count                    = module.context.enabled && local.enable_sns_notifications ? 1 : 0
   source                   = "SevenPicoForks/kms-key/aws"
   version                  = "2.0.0"
   context                  = module.context.self
@@ -19,7 +24,7 @@ module "sns_kms_key" {
 # Sns
 #------------------------------------------------------------------------------
 module "sns" {
-  count             = module.context.enabled ? 1 : 0
+  count             = module.context.enabled && local.enable_sns_notifications ? 1 : 0
   source            = "SevenPico/sns/aws"
   version           = "2.0.2"
   context           = module.context.self
@@ -39,7 +44,7 @@ resource "aws_docdb_event_subscription" "ddb_event_subscription" {
   event_categories = var.ddb_event_categories
   source_type      = var.ddb_source_type
   source_ids       = var.ddb_source_ids
-  sns_topic_arn    = try(module.sns[0].topic_arn, "")
+  sns_topic_arn    =  local.enable_sns_notifications ? try(module.sns[0].topic_arn, "") : var.sns_topic_arn
   tags             = module.context.tags
 }
 
