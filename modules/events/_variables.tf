@@ -16,6 +16,11 @@ variable "ddb_event_categories" {
 
 variable "sns_topic_arn" {
   type        = string
-  default     = null
-  description = "Provide sns topic arn."
+  description = "Provide sns topic arn if `create_sns_notification=false`."
+}
+
+variable "create_sns_notification" {
+  type    = bool
+  default = true
+  description = "Enable sns notification."
 }

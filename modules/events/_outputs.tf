@@ -9,6 +9,6 @@ output "arn" {
 }
 
 output "sns_topic_arn" {
-  value = local.enable_sns_notifications ? try(module.sns[0].topic_arn, "") : 0
+  value = try(module.sns.topic_arn, "")
   description = "Amazon Resource Name (ARN) of SNS topic."
 }

@@ -49,7 +49,6 @@ module "documentdb_cluster" {
 # Sns
 #------------------------------------------------------------------------------
 module "sns" {
-  count   = module.context.enabled ? 1 : 0
   source  = "SevenPico/sns/aws"
   version = "2.0.2"
   context = module.context.self
@@ -58,6 +57,7 @@ module "sns" {
   pub_principals    = {}
   sub_principals    = {}
 }
+
 
 #------------------------------------------------------------------------------
 # Cluster Event Subscription
@@ -96,5 +96,5 @@ module "ddb_event_subscription_instance" {
   ddb_event_categories = ["failure", "failover"]
   ddb_source_ids       = [module.documentdb_cluster.instance_identifier]
   ddb_source_type      = "db-instance"
-  sns_topic_arn        = module.sns[0].topic_arn
+  sns_topic_arn        = module.sns.topic_arn
 }
