@@ -6,6 +6,7 @@ module "sns_kms_key" {
   version                  = "2.0.0"
   context                  = module.context.self
   enabled                  = module.context.enabled && var.create_sns_notification
+
   alias                    = ""
   customer_master_key_spec = "SYMMETRIC_DEFAULT"
   deletion_window_in_days  = 30
@@ -33,7 +34,7 @@ module "sns" {
 #------------------------------------------------------------------------------
 # DDB Event Subscription
 #------------------------------------------------------------------------------
-resource "aws_docdb_event_subscription" "ddb_event_subscription" {
+resource "aws_docdb_event_subscription" "ddb_events_subscription" {
   count            = module.context.enabled ? 1 : 0
   name             = "${module.context.id}-events"
   enabled          = true
