@@ -67,10 +67,10 @@ module "ddb_event_subscription_cluster_creation" {
   context    = module.context.self
   attributes = ["creation"]
 
-  ddb_event_categories = ["creation"]
-  ddb_source_ids       = [module.documentdb_cluster.id]
-  ddb_source_type      = "db-cluster"
-  sns_topic_arn        = null
+  enable_sns_notification = true
+  ddb_event_categories    = ["creation"]
+  ddb_source_ids          = [module.documentdb_cluster.id]
+  ddb_source_type         = "db-cluster"
 }
 
 module "ddb_event_subscription_cluster_failure_failover" {
@@ -78,10 +78,10 @@ module "ddb_event_subscription_cluster_failure_failover" {
   context    = module.context.self
   attributes = ["failure", "failover"]
 
-  ddb_event_categories = ["failure", "failover"]
-  ddb_source_ids       = [module.documentdb_cluster.id]
-  ddb_source_type      = "db-cluster"
-  sns_topic_arn        = null
+  enable_sns_notification = true
+  ddb_event_categories    = ["failure", "failover"]
+  ddb_source_ids          = [module.documentdb_cluster.id]
+  ddb_source_type         = "db-cluster"
 }
 
 
@@ -93,8 +93,9 @@ module "ddb_event_subscription_instance" {
   context    = module.context.self
   attributes = ["cluster", "instance"]
 
-  ddb_event_categories = ["failure", "failover"]
-  ddb_source_ids       = [module.documentdb_cluster.instance_identifier]
-  ddb_source_type      = "db-instance"
-  sns_topic_arn        = module.sns.topic_arn
+  enable_sns_notification = false
+  ddb_event_categories    = ["failure", "failover"]
+  ddb_source_ids          = [module.documentdb_cluster.instance_identifier]
+  ddb_source_type         = "db-instance"
+  sns_topic_arn           = module.sns.topic_arn
 }

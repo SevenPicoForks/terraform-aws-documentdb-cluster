@@ -19,7 +19,7 @@ variable "sns_topic_arn" {
   description = "Provide sns topic arn if `create_sns_notification=false`."
 }
 
-variable "create_sns_notification" {
+variable "enable_sns_notification" {
   type    = bool
   default = true
   description = "Enable sns notification."
