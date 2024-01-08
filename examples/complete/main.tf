@@ -9,36 +9,13 @@ https://www.terraform.io/docs/providers/aws/r/docdb_cluster_parameter_group.html
 https://www.terraform.io/docs/providers/aws/r/docdb_subnet_group.html
 https://docs.aws.amazon.com/documentdb/latest/developerguide/troubleshooting.html
 */
-
-provider "aws" {
-  region = var.region
-}
-
-module "vpc" {
-  source  = "cloudposse/vpc/aws"
-  version = "0.27.0"
-
-  cidr_block = var.vpc_cidr_block
-
-  context = module.context.self
-}
-
-module "subnets" {
-  source  = "cloudposse/dynamic-subnets/aws"
-  version = "0.39.6"
-
-  availability_zones   = var.availability_zones
-  vpc_id               = module.vpc.vpc_id
-  igw_id               = module.vpc.igw_id
-  cidr_block           = module.vpc.vpc_cidr_block
-  nat_gateway_enabled  = false
-  nat_instance_enabled = false
-
-  context = module.context.self
-}
-
+#------------------------------------------------------------------------------
+# DocumentDB Cluster
+#------------------------------------------------------------------------------
 module "documentdb_cluster" {
-  source                          = "../../"
+  source  = "../../"
+  context = module.context.self
+
   cluster_size                    = var.cluster_size
   master_username                 = var.master_username
   master_password                 = var.master_password
@@ -46,7 +23,6 @@ module "documentdb_cluster" {
   db_port                         = var.db_port
   vpc_id                          = module.vpc.vpc_id
   subnet_ids                      = module.subnets.private_subnet_ids
-  zone_id                         = var.zone_id
   apply_immediately               = var.apply_immediately
   auto_minor_version_upgrade      = var.auto_minor_version_upgrade
   allowed_security_groups         = var.allowed_security_groups
@@ -65,6 +41,61 @@ module "documentdb_cluster" {
   enabled_cloudwatch_logs_exports = var.enabled_cloudwatch_logs_exports
   cluster_dns_name                = var.cluster_dns_name
   reader_dns_name                 = var.reader_dns_name
+  zone_id                         = try(aws_route53_zone.private[0].id, "")
+}
 
+
+#------------------------------------------------------------------------------
+# Sns
+#------------------------------------------------------------------------------
+module "sns" {
+  source  = "SevenPico/sns/aws"
+  version = "2.0.2"
   context = module.context.self
+
+  kms_master_key_id = ""
+  pub_principals    = {}
+  sub_principals    = {}
+}
+
+
+#------------------------------------------------------------------------------
+# Cluster Event Subscription
+#------------------------------------------------------------------------------
+module "ddb_event_subscription_cluster_creation" {
+  source     = "../../modules/events"
+  context    = module.context.self
+  attributes = ["creation"]
+
+  enable_sns_notification = true
+  ddb_event_categories    = ["creation"]
+  ddb_source_ids          = [module.documentdb_cluster.id]
+  ddb_source_type         = "db-cluster"
+}
+
+module "ddb_event_subscription_cluster_failure_failover" {
+  source     = "../../modules/events"
+  context    = module.context.self
+  attributes = ["failure", "failover"]
+
+  enable_sns_notification = true
+  ddb_event_categories    = ["failure", "failover"]
+  ddb_source_ids          = [module.documentdb_cluster.id]
+  ddb_source_type         = "db-cluster"
+}
+
+
+#------------------------------------------------------------------------------
+# Cluster Instance Event Subscription
+#------------------------------------------------------------------------------
+module "ddb_event_subscription_instance" {
+  source     = "../../modules/events"
+  context    = module.context.self
+  attributes = ["cluster", "instance"]
+
+  enable_sns_notification = false
+  ddb_event_categories    = ["failure", "failover"]
+  ddb_source_ids          = [module.documentdb_cluster.instance_identifier]
+  ddb_source_type         = "db-instance"
+  sns_topic_arn           = module.sns.topic_arn
 }
