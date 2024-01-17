@@ -9,7 +9,7 @@ output "arn" {
 }
 
 output "sns_topic_arn" {
-  value = try(module.sns.topic_arn, "")
+  value       = try(module.sns.topic_arn, "")
   description = "Amazon Resource Name (ARN) of SNS topic."
 }
 
