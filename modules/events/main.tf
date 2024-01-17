@@ -2,10 +2,10 @@
 # Sns Kms Key
 #------------------------------------------------------------------------------
 module "sns_kms_key" {
-  source                   = "SevenPicoForks/kms-key/aws"
-  version                  = "2.0.0"
-  context                  = module.context.self
-  enabled                  = module.context.enabled && var.enable_sns_notification
+  source  = "SevenPicoForks/kms-key/aws"
+  version = "2.0.0"
+  context = module.context.self
+  enabled = module.context.enabled && var.enable_sns_notification
 
   alias                    = ""
   customer_master_key_spec = "SYMMETRIC_DEFAULT"
@@ -20,10 +20,10 @@ module "sns_kms_key" {
 # Sns
 #------------------------------------------------------------------------------
 module "sns" {
-  source            = "SevenPico/sns/aws"
-  version           = "2.0.2"
-  context           = module.context.self
-  enabled           = module.context.enabled && var.enable_sns_notification
+  source  = "SevenPico/sns/aws"
+  version = "2.0.2"
+  context = module.context.self
+  enabled = module.context.enabled && var.enable_sns_notification
 
   kms_master_key_id = module.sns_kms_key.key_id
   pub_principals    = {}
