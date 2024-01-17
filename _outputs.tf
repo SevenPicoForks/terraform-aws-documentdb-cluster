@@ -56,3 +56,8 @@ output "security_group_name" {
   description = "Name of the DocumentDB cluster Security Group"
   value       = try(aws_security_group.default[0].name, "")
 }
+
+output "parameter_group_name" {
+  description = "Name of the DocumentDB cluster Parameter Group"
+  value = try(aws_docdb_cluster_parameter_group.default[0].name,"")
+}

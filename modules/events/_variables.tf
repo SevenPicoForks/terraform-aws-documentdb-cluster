@@ -21,7 +21,7 @@ variable "sns_topic_arn" {
 }
 
 variable "enable_sns_notification" {
-  type    = bool
-  default = true
+  type        = bool
+  default     = true
   description = "Enable sns notification."
 }
