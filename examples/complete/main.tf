@@ -46,20 +46,6 @@ module "documentdb_cluster" {
 
 
 #------------------------------------------------------------------------------
-# Sns
-#------------------------------------------------------------------------------
-module "sns" {
-  source  = "SevenPico/sns/aws"
-  version = "2.0.2"
-  context = module.context.self
-
-  kms_master_key_id = ""
-  pub_principals    = {}
-  sub_principals    = {}
-}
-
-
-#------------------------------------------------------------------------------
 # Cluster Event Subscription
 #------------------------------------------------------------------------------
 module "ddb_event_subscription_cluster_creation" {

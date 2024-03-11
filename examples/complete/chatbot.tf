@@ -42,7 +42,7 @@ resource "awscc_chatbot_slack_channel_configuration" "chatbot_slack" {
   slack_channel_id   = var.slack_channel_id
   slack_workspace_id = var.slack_workspace_id
   sns_topic_arns = [
-    try(module.sns.topic_arn, "")
+    try(aws_sns_topic.sns_chatbot[0].arn, "")
   ]
   user_role_required = false
 }
