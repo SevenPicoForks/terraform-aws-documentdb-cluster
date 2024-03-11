@@ -9,7 +9,7 @@ output "cluster_name" {
 }
 
 output "instance_identifier" {
-  value = join("", aws_docdb_cluster_instance.default.*.identifier)
+  value = join(", ", aws_docdb_cluster_instance.default.*.identifier)
 }
 
 output "arn" {
