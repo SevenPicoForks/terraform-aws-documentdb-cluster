@@ -9,7 +9,7 @@ module "sns" {
 
   kms_master_key_id = var.kms_key_id
   pub_principals = {
-    "ddbpubpermission" = {
+    "DocDbToPublish" = {
       type        = "Service"
       identifiers = ["rds.amazonaws.com"]
       condition = {
