@@ -11,7 +11,7 @@ module "sns" {
   pub_principals = {
     "ddbpubpermission" = {
       type        = "Service"
-      identifiers = ["rds.amazonaws.com"] // This should be replaced with the actual service or ARN you're intending to allow.
+      identifiers = ["rds.amazonaws.com"]
       condition = {
         test     = "StringEquals"
         variable = "AWS:SourceOwner"
