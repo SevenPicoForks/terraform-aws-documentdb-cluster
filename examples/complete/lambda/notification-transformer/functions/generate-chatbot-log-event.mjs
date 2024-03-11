@@ -34,7 +34,7 @@ function getDescription({ event }) {
 >*Event Source*
 >${event["Event Source"]}
 >*Source ID*
->${event["Event Source"]}
+>${event["Source ID"]}
 >*Identifier Link*
 >${event["Identifier Link"]}
 >*Timestamp*
