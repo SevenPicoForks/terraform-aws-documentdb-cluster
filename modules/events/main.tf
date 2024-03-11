@@ -15,7 +15,7 @@ module "sns" {
       condition = {
         test     = "StringEquals"
         variable = "AWS:SourceOwner"
-        values   = ["${local.arn_prefix}:rds:${local.region}:${local.account_id}:*:*"]
+        values   = ["${local.arn_prefix}:rds:${local.region}:${local.account_id}:*"]
       }
     }
   }
