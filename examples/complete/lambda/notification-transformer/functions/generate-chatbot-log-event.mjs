@@ -1,4 +1,4 @@
-import { REGION, ACCOUNT_NUMBER, DEPLOYMENT_ENVIRONMENT }  from '../constants/index.mjs'
+import { REGION, ACCOUNT_ID, DEPLOYMENT_ENVIRONMENT }  from '../constants/index.mjs'
 
 export function generateChatbotLogEvent({ event, messageId }) {
   
@@ -27,7 +27,7 @@ function getLogType ({ event }) {
 }
 
 function getTitle({ event }) {
- return `⚠ AWS DocumentDB Notification | ${REGION} | Account: ${ACCOUNT_NUMBER}`;
+ return `⚠ AWS DocumentDB Notification | ${REGION} | Account: ${ACCOUNT_ID}`;
 }
 function getDescription({ event }) {
       return `
