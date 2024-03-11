@@ -29,16 +29,19 @@ module "chatbot_role" {
 #------------------------------------------------------------------------------
 # ChatBot
 #------------------------------------------------------------------------------
+resource "aws_sns_topic" "sns_chatbot" {
+  count  = module.context.enabled ? 1 : 0
+  name   = "${module.context.id}-notifications-chatbot"
+}
+
 resource "awscc_chatbot_slack_channel_configuration" "chatbot_slack" {
   count              = module.context.enabled ? 1 : 0
-  configuration_name = "${module.context.id}-log-events-notification"
+  configuration_name = "${module.context.id}-events-notification"
   iam_role_arn       = module.chatbot_role.arn
   logging_level      = "NONE"
   slack_channel_id   = var.slack_channel_id
   slack_workspace_id = var.slack_workspace_id
   sns_topic_arns = [
-    module.ddb_event_subscription_cluster_creation.sns_topic_arn,
-    module.ddb_event_subscription_cluster_failure_failover.sns_topic_arn,
     try(module.sns.topic_arn, "")
   ]
   user_role_required = false

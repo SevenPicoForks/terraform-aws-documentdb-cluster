@@ -64,5 +64,5 @@ output "security_group_name" {
 }
 
 output "instance_name" {
-  value = module.documentdb_cluster.instance_identifier
+  value = [module.documentdb_cluster.*.instance_identifier]
 }
