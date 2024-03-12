@@ -46,56 +46,17 @@ module "documentdb_cluster" {
 
 
 #------------------------------------------------------------------------------
-# Sns
-#------------------------------------------------------------------------------
-module "sns" {
-  source  = "SevenPico/sns/aws"
-  version = "2.0.2"
-  context = module.context.self
-
-  kms_master_key_id = ""
-  pub_principals    = {}
-  sub_principals    = {}
-}
-
-
-#------------------------------------------------------------------------------
 # Cluster Event Subscription
 #------------------------------------------------------------------------------
 module "ddb_event_subscription_cluster_creation" {
   source     = "../../modules/events"
   context    = module.context.self
-  attributes = ["creation"]
-
-  enable_sns_notification = true
-  ddb_event_categories    = ["creation"]
-  ddb_source_ids          = [module.documentdb_cluster.id]
-  ddb_source_type         = "db-cluster"
-}
-
-module "ddb_event_subscription_cluster_failure_failover" {
-  source     = "../../modules/events"
-  context    = module.context.self
   attributes = ["failure", "failover"]
 
-  enable_sns_notification = true
-  ddb_event_categories    = ["failure", "failover"]
+  ddb_event_categories    = ["failover", "failure"]
   ddb_source_ids          = [module.documentdb_cluster.id]
   ddb_source_type         = "db-cluster"
+  enable_sns_notification = true
+  sns_topic_arn           = ""
 }
 
-
-#------------------------------------------------------------------------------
-# Cluster Instance Event Subscription
-#------------------------------------------------------------------------------
-module "ddb_event_subscription_instance" {
-  source     = "../../modules/events"
-  context    = module.context.self
-  attributes = ["cluster", "instance"]
-
-  enable_sns_notification = false
-  ddb_event_categories    = ["failure", "failover"]
-  ddb_source_ids          = [module.documentdb_cluster.instance_identifier]
-  ddb_source_type         = "db-instance"
-  sns_topic_arn           = module.sns.topic_arn
-}
