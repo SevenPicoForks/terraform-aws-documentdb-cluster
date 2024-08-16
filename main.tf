@@ -71,13 +71,13 @@ resource "aws_docdb_cluster" "default" {
   enabled_cloudwatch_logs_exports = var.enabled_cloudwatch_logs_exports
   tags                            = module.context.tags
 
-
 }
 
 resource "aws_docdb_cluster_instance" "default" {
   count                      = module.context.enabled ? var.cluster_size : 0
   identifier                 = "${module.context.id}-${count.index + 1}"
   cluster_identifier         = join("", aws_docdb_cluster.default.*.id)
+  ca_cert_identifier         = var.ca_certificate_identifier
   apply_immediately          = var.apply_immediately
   instance_class             = var.instance_class
   engine                     = var.engine

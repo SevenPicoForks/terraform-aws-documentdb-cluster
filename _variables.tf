@@ -173,3 +173,9 @@ variable "performance_insights_kms_key_id" {
   description = "The KMS key identifier is the key ARN, key ID, alias ARN, or alias name for the KMS key. If you do not specify a value for PerformanceInsightsKMSKeyId, then Amazon DocumentDB uses your default KMS key."
   default     = ""
 }
+
+variable "ca_certificate_identifier" {
+  description = "The identifier of the CA certificate for the DB cluster."
+  type        = string
+  default     = "rds-ca-rsa2048-g1"
+}
